@@ -94,3 +94,6 @@ True
 ## Authors
 * Joshua Vendrow
 * Jamie Haddock
+
+## Contributor
+* Martijn Nagtegaal
