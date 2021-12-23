@@ -11,8 +11,6 @@ from time import time
 
 from fnnls.fnnls import fnnls
 
-
-
 class nnls_comparison():
 
     def __init__(self):
@@ -28,10 +26,10 @@ class nnls_comparison():
         ----------
         repetitions: int
             The number of times to run at optimizer at each dimensions
-            for precision. 
+            for precision.
 
         dimensions: numpy array
-            A list of dimensions of matrix A and vector x to use 
+            A list of dimensions of matrix A and vector x to use
             for testing.
 
         optimizers: list
@@ -69,11 +67,11 @@ class nnls_comparison():
 
                     #Measure the speed of running the optimizer
                     start = time()
-                    
+
                     [d, res] = optimizer(Z, x)
 
                     end = time()
-                
+
                     time_total += end - start
                     res_total += res
                     ds.append(d)
@@ -151,7 +149,7 @@ class nnls_comparison():
             for j in range(len(residuals_1)):
                 avg_diff += np.linalg.norm(residuals_1[j] - residuals_2[j]) / np.linalg.norm(residuals_1[j])
             differences.append(avg_diff / len(residuals_1))
-            
+
         return differences
 
 
@@ -166,7 +164,8 @@ if SPARSE:
 else:
     generator = np.random.randn
 
-
+# Run fnnls once for JIT
+fnnls(np.random.rand(10,10), np.random.rand(10))
 
 #Declare parameters for testing
 repetitions = 25
