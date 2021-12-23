@@ -48,6 +48,7 @@ It's easy to directly solve a nonnegative least squares task with `fnnls`:
 
 ```
 **Custom least squared functions:**
+This function was removed to allow for the use of numba.
 
 The fast nonegative least square algorithm solves an unconstrained least squares task for every iteration. By default, we use numpy.linalg.lstsq. 
 
