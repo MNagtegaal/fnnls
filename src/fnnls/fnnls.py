@@ -41,6 +41,16 @@ def fnnls(Z, x, P_initial = np.zeros(0, dtype=int), ):
         Z = Z.astype(float)
     if np.issubdtype(int, x.dtype):
         x = x.astype(float)
+    if np.iscomplex(Z).any():
+        if Z.imag.sum()==0:
+            Z = Z.real
+        else:
+            raise ValueError("Z is complex valued")
+        if x.imag.sum()==0:
+            x = x.real
+        else:
+            raise ValueError("x is complex valued")
+    
 
     m, n = Z.shape
 
@@ -62,7 +72,7 @@ def fnnls(Z, x, P_initial = np.zeros(0, dtype=int), ):
     if x.shape[0] != m:
         raise ValueError("Incompatable dimensions. The first dimension of Z should match the length of x, but Z is of shape {} and x is of shape {}".format(Z.shape, x.shape))
 
-    return _fnnls(Z, x, P_initial)
+    return _fnnls(Z.astype(np.float64), x.astype(np.float64), P_initial)
 
 @njit
 def _fnnls(Z:np.ndarray, x:np.ndarray, P_initial:np.ndarray, ):
@@ -117,7 +127,7 @@ def _fnnls(Z:np.ndarray, x:np.ndarray, P_initial:np.ndarray, ):
 
     # A3
     # Initialize d to zero vector
-    d = np.zeros(n)
+    d = np.zeros(n, dtype=np.float64)
 
     # A4
     # Set w = Z^T*x - (Z^T*Z)d
@@ -126,7 +136,7 @@ def _fnnls(Z:np.ndarray, x:np.ndarray, P_initial:np.ndarray, ):
     w = ZTx - (ZTZ) @ d
 
     # Initialize s
-    s = np.zeros(n)
+    s = np.zeros(n, dtype=np.float64)
 
     # Count of amount of consecutive times set P has remained unchanged
     no_update = 0
